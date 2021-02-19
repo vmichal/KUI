@@ -19,7 +19,8 @@ def is_solvable(env):
 	array = [env.read_tile(row, col) for row, col in itertools.product(range(size), range(size))]
 
 	#remove the None element so that we have simpler search algorithm. If we replace it by the greatest number in the sequence
-	#(the one for which predicate 'being less than' fails), it will not interfere with our calculation
+	#(the one for which predicate 'being less than' fails), it will not interfere with our calculation that much
+	index_of_none = array.index(None)
 	array[array.index(None)] = len(array)
 
 	#we have an array of size**2 numbers and we are interested in the number of inversions.
@@ -27,11 +28,17 @@ def is_solvable(env):
 	#By counting inversions, we count the number of unique pairs (i, j) for which an inversion is present.
 
 	inversions = sum(array[i] > array[j] for i, j in itertools.combinations(range(len(array)), 2))
+	#we must subtract the number of successors of empty field, because those have been incorrectly counted as inversions
+	inversions -= len(array) - index_of_none - 1
 
-	return inversions % 2 == 0
+	if size % 2 == 1: #odd length of square, it is enough to check the number of inversions
+		return inversions % 2 == 0
+	else:
+		return bool(inversions % 2 == 0) == bool((size - index_of_none//size) % 2 == 1)
+
  
 if __name__=="__main__":
-	env = npuzzle.NPuzzle(3) # env = npuzzle.NPuzzle(4)
+	env = npuzzle.NPuzzle(4) # env = npuzzle.NPuzzle(4)
 	env.reset()
 	env.visualise()
 	# just check
