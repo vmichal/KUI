@@ -1,0 +1,132 @@
+\documentclass[twoside]{article}
+\usepackage[a4paper]{geometry}
+\geometry{verbose,tmargin=2.5cm,bmargin=2cm,lmargin=2cm,rmargin=2cm}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+% nastavení pisma a češtiny
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[czech]{babel}
+
+% odkazy
+\usepackage{url}
+
+% vícesloupcové tabulky
+\usepackage{multirow}
+\usepackage{amssymb}
+\usepackage{bbold}
+\usepackage{amsmath}
+\usepackage{commath}
+
+% vnořené popisky obrázků
+\usepackage{subcaption}
+
+% automatická konverze EPS 
+\usepackage{graphicx} 
+\usepackage{epstopdf}
+\epstopdfsetup{update}
+
+\graphicspath{{./images}}
+
+% odkazy a záložky
+\usepackage[unicode=true, bookmarks=true,bookmarksnumbered=true,
+bookmarksopen=false, breaklinks=false,pdfborder={0 0 0},
+pdfpagemode=UseNone,backref=false,colorlinks=true] {hyperref}
+
+% Poznámky při překladu
+\usepackage{xkeyval}	% Inline todonotes
+\usepackage[textsize = footnotesize]{todonotes}
+\presetkeys{todonotes}{inline}{}
+
+% enumerate zacina s pismenem
+\renewcommand{\theenumi}{\alph{enumi}}
+
+% smaz aktualni page layout
+\fancyhf{}
+% zahlavi
+\usepackage{titling}
+\fancyhf[HC]{\thetitle}
+\fancyhf[HLE,HRO]{\theauthor}
+\fancyhf[HRE,HLO]{\today}
+ %zapati
+\fancyhf[FLE,FRO]{\thepage}
+
+% údaje o autorovi
+\title{KUI kvíz 2 - Letová hladina}
+\author{Vojtěch Michal}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+
+\section{Zadání}
+Let mezi mesty A a B je dlouhy 1500 kilometruu. Mate pripravit optimalnı letovy plan s ohledem na
+spotrebu paliva pro letadlo mezi temito mesty. K dispozici mate ctyri letove hladiny a tri operace -
+up, keep level, down. Operacı up stoupa letadlo mezi hladinami a posune se o jednotku letu, keep
+level pokracuje na dane hladine v letu a down naopak snizuje letovou hladinu za soucasneho posunu o
+jednotku letu. Spotreba paliva se pocıta na 50 kilometru. Let na prvnı hladine stojı $k_1 = 14$ jednotek paliva,
+let na druhe letove hladine stojı $k_2 = 13$ jednotek paliva, let na tretı letove hladine stojı $k_3 = 11$ jednotek paliva
+a let na poslednı hladine stojı $k_4 = 9$ jednotek paliva. Zmena mezi prvnı a druhou letovou hladinou stojı $p_1 = 19$
+jednotek paliva, zmena mezi druhou a tretı hladinou stojı $p_2 = 21$ jednotek paliva a zmena mezi poslednımi
+dvema hladinami stojı $p_3 = 23$ jednotek paliva.
+
+\begin{itemize}
+	\item Jaky je tedy optimalni letovy plan pro tento let?
+	\item Upravte ceny stoupani a klesani tak, aby bylo vyhodnejsı letet nejakou jinou letovou hladinou, napiste kterou a popiste letovy plan.
+\end{itemize}
+
+\section{Analýza}
+Let sestává z $\frac{1500 \text{km} }{50 \text{km} } = 30$ dílků cesty. Protože jsou ceny letu na dílčích hladinách
+konstantní, nemá smysl za letu měnit hladinu. Optimální je vybrat jednu hladinu na začátku a na konci z ní sestoupit.
+Celková cena letu $N_h$ při použití letové hladiny $h$ se seskládá dle rovnice
+\begin{equation}
+	\label{eq:cena}
+	N_h = \sum_{i=1}^{h-1} 2 \cdot p_i + (\underbrace{30 - 2\cdot (h-1)}_{\text{délka letu v hladině $h$}}) \cdot \underbrace{k_i}_{\text{cena letu v hladině $h$}},
+\end{equation}
+neboť vystoupáme-li na počátku do hladiny $h$, provedeme $h-1$ přechodů s cenou $p_i$ a na konci letu je musíme provést znovu k sestoupení na zem.
+Ve střední části letu letíme na stejné hladině s cenou $k_i$ na dílek.
+
+\section{Optimální plán letu}
+Optimální plán letu nalezneme dosazením do vzorce \eqref{eq:cena} a nalezením nejmenšího N.
+\begin{equation}
+	\begin{split}
+		N_1 &= 0 + 30 \cdot 14 = 420 \\
+		N_2 &= 2 \cdot (19) + 28 \cdot 13 = 402 \\
+		N_3 &= 2 \cdot (19 + 21) + 26 \cdot 11 = 366 \\
+		N_4 &= 2 \cdot (19 + 21 + 23) + 24 \cdot 9 = 342 \\
+	\end{split}
+\end{equation}
+Protože hledáme minimální $N$, je nejlevnější zjevně hladina $h = 4$ s cenou $N_4 = 342$ jednotek paliva.
+
+\section{Úprava cen přechodů mezi hladinami}
+Nejsnazší je vynutit let v první hladině, jehož cena je $N_1 = 420$. Pakliže bychom nastavili například $p_1$ (cenu přechodu z první hladiny na druhou)
+na $\frac{N_1}{2}$, poté by každá další letová hladina byla zjevně dražší a optimální let by proběhl na hladině $h = 1$. To je vidět při dosažení do rovnice \eqref{eq:cena} pro $h>1$:
+\begin{equation*}
+	N_h = 2\cdot \frac{N_1}{2} + \underbrace{\sum_{i=2}^{h-1} 2 \cdot p_i + (30 - 2\cdot (h-1) \cdot {k_i}}_{\ge 0} \ge N_1.
+\end{equation*}
+
+Nutno poznamenat, že volba ceny přechodu $p_1$ rozhodně není nejmenší možná. Protože jsou všechny ceny nezáporné (dokonce kladné), není možné
+odečítat cenu z již naakumulované sumy. Proto není potřeba provést tak výrazné zvětšení ceny přechodu $p_1$.
+\begin{thebibliography}{9}
+
+\bibitem{rickroll}
+	, \emph{Ultimate guide how to program the universe} \url{https://www.youtube.com/watch?v=dQw4w9WgXcQ}
+\end{thebibliography}
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
+

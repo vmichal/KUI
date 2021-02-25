@@ -1,2 +1,9 @@
 /*/__pycache__/
 /*/.vs/
+**/*.asv
+**/*.aux
+**/*.fls
+**/*.log
+**/*.out
+**/*.pdf
+**/*.fdb_latexmk
