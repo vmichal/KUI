@@ -7,7 +7,6 @@ import time
 from game_board import GameBoard
 from player_creator import create_player
 
-
 class HeadlessReversiCreator(object):
 	'''
 	Creator of the Reversi game without the GUI.
@@ -35,6 +34,7 @@ class HeadlessReversiCreator(object):
 		This function contains the game loop that plays the game.
 		'''
 		correct_finish = True
+		maxMoveTime = 0
 		while self.board.can_play(self.current_player_color):
 			startTime = time.time()
 			move = self.current_player.move(self.board.get_board_copy())
@@ -48,12 +48,15 @@ class HeadlessReversiCreator(object):
 				correct_finish = False
 				break
 			else:
-				print('Player %d wants move [%d,%d]. Move takes %.3f ms.' % (
-						self.current_player_color, move[0], move[1], moveTime))
+				if moveTime > 100:
+					print(f'New max move time {moveTime:.3f} ms')
+				#print('Player %d wants move [%d,%d]. Move takes %.3f ms.' % (
+				#		self.current_player_color, move[0], move[1], moveTime))
+				pass
 
 			move = (int(move[0]), int(move[1]))
 			if self.board.is_correct_move(move, self.current_player_color):
-				print('Move is correct')
+				#print('Move is correct')
 				self.board.play_move(move, self.current_player_color)
 
 			else:
@@ -64,16 +67,20 @@ class HeadlessReversiCreator(object):
 
 			self.change_player()
 			if not self.board.can_play(self.current_player_color):
-				print('No possible move for Player %d' % (self.current_player_color))
+				#print('No possible move for Player %d' % (self.current_player_color))
 				self.change_player()
 				if self.board.can_play(self.current_player_color):
-					print('Player %d plays again ' % (self.current_player_color))
+					#print('Player %d plays again ' % (self.current_player_color))
+					pass
 				else:
-					print('Game over')
+					#print('Game over')
+					pass
 
-			self.board.print_board()
+			#TODO uncomment this to get pretty output
+			#self.board.print_board()
 		if correct_finish:
-			self.printFinalScore()
+			#self.printFinalScore()
+			return self.countStones()
 		else:
 			print('Game over.')
 			if self.current_player_color == self.player1_color:
@@ -127,18 +134,32 @@ if __name__ == "__main__":
 	board_size = 8
 
 	colors = [p1_color, p2_color]
-	players = []
+	player_modules = []
 	# if only one player specified, it will play againts itself
 	for i in [0, -1]:
 		to_import = args[i]
 		if ".py" in args[i]:
 			to_import = args[i].replace(".py", "")
-		print('importing', to_import)
+		#print('importing', to_import)
 		player_module = __import__(to_import)
-		players.append(create_player(player_module.MyPlayer,
-									 colors[i], colors[i+1], board_size))
+		player_modules.append(player_module)
+	
 
-	game = HeadlessReversiCreator(players[0], p1_color,
+	games = 1000
+	player_wins = 0
+	draws = 0
+	for i in range(games):
+		players = [create_player(module.MyPlayer, colors[j+1], colors[j], board_size) for j, module in enumerate(player_modules, start=-1)]
+		game = HeadlessReversiCreator(players[0], p1_color,
 								  players[1], p2_color, board_size)
-	game.play_game()
+		p1, p2 = game.play_game()
+	
+		print(f'Score {p1}:{p2}')
+		if p1 > p2:
+			player_wins += 1
+		elif p1 == p2:
+			draws += 1
+	
+	print(f'After {games} games, the player has {100 * player_wins / games :.2f}% win rate ({draws} draws)')
+				 
 

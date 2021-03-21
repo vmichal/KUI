@@ -11,7 +11,7 @@ class MyPlayer(object):
         self.my_color = my_color
         self.opponent_color = opponent_color
         self.board_size = board_size
-        print('create random player')
+        #print(f'create random player. my: {my_color}, opponent: {opponent_color}, board size {board_size}')
 
     def move(self, board):
         possible = []
