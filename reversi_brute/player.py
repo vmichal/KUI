@@ -26,7 +26,7 @@ class MyPlayer():
 		self.colors = colors(my_color, opponent_color, -1)
 		self.max_depth = 6
 
-	def countStoneDifference(self, board):
+	def count_stone_difference(self, board):
 		#Computes a heuristic value for a state - the difference between number of my and opponent's stones
 		my = 0
 		others = 0
@@ -44,7 +44,7 @@ class MyPlayer():
 
 		#Check whether we can go any deeper.
 		if layers_remaining == 0: #we cannot go further. What is the value of the current state?
-			difference = self.countStoneDifference(board)
+			difference = self.count_stone_difference(board)
 			if self.debug:
 				print(f'Hit max depth. Returning heuristic value {difference}')
 
@@ -56,7 +56,7 @@ class MyPlayer():
 
 		if possible_moves is None:
 			#We have hit a terminal state (at least for us) - there are no more moves we can perform 
-			difference = self.countStoneDifference(board)
+			difference = self.count_stone_difference(board)
 			if self.debug:
 				print(f'Hit terminal node (no more steps to perform). Difference in stones: {difference}')
 
