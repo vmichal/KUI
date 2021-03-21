@@ -39,7 +39,7 @@ class MyPlayer():
 					others += 1
 		return my - others
 
-	def alpha_beta_prunning(self, alpha, beta, layers_remaining, board, current, other, node_fun):
+	def alpha_beta_prunning(self, alpha, beta, layers_remaining, board, current, other, is_max_node):
 		#Returns tuple (new_alpha, new_beta)
 		if self.debug:
 			print(f"Starting A-B prunning for player {current} with alpha {alpha}, beta {beta}, function {node_fun}. {layers_remaining} layers to go.")
@@ -52,8 +52,6 @@ class MyPlayer():
 
 			#Since we are in the leaf, the interval of possible values degenerates into a single real number.
 			return difference, difference, None 
-
-		is_max_node = node_fun == max #max nodes represent our choices. min nodes model the opponent.
 
 		#It is possible to search firther down. Start by finding all possible moves
 		possible_moves = self.find_and_eval_moves(board, current, other)
@@ -77,18 +75,18 @@ class MyPlayer():
 			#Execute the specified move
 			changes = self.attempt_move(board, move, current)
 
-			#From here, take a look what the enemy thinks about move. Ther roles swap and the other player performs a search. The type of node (min/max) is changed too
-			new_alpha, new_beta, _ = self.alpha_beta_prunning(alpha, beta, layers_remaining - 1, board, other, current, min if is_max_node else max)
+			#From here, take a look what the enemy thinks about the move. Ther roles swap and the other player performs a search. The type of node (min/max) is changed too
+			child_alpha, child_beta, _ = self.alpha_beta_prunning(alpha, beta, layers_remaining - 1, board, other, current, not is_max_node)
 			if self.debug:
-				print(f'Pruning child is complete. Data: {new_alpha}, {new_beta}')
+				print(f'Prunning of child completed. Interval [{child_alpha}, {child_beta}]')
 			if is_max_node:
-				if node_fun(alpha, new_alpha) > alpha:
-					alpha, best_move = new_alpha, move
+				if child_beta > alpha:
+					alpha, best_move = child_beta, move
 					if self.debug:
 						print(f'New alpha {alpha}')
 			else:
-				if node_fun(beta, new_beta) < beta:
-					beta, best_move = new_beta, move
+				if child_alpha < beta:
+					beta, best_move = child_alpha, move
 					if self.debug:
 						print(f'New beta {beta}')
 
@@ -145,7 +143,7 @@ class MyPlayer():
 		beta = math.inf
 
 		#Initiate recursive search for the optimal move using alpha beta prunning of the search tree. The root is one big max node (my choice of move)
-		_, _, optimal_move = self.alpha_beta_prunning(alpha, beta, self.max_depth, board, self.colors.me, self.colors.opponent, max)
+		_, _, optimal_move = self.alpha_beta_prunning(alpha, beta, self.max_depth, board, self.colors.me, self.colors.opponent, True)
 
 		return optimal_move
 
