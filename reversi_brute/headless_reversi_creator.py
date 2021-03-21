@@ -1,4 +1,5 @@
-# import random_player
+
+		# import random_player
 import getopt
 import sys
 import time
@@ -91,7 +92,7 @@ class HeadlessReversiCreator(object):
 			self.current_player = self.player1
 			self.current_player_color = self.player1_color
 
-	def printFinalScore(self):
+	def countStones(self):
 		p1_stones = 0
 		p2_stones = 0
 		for x in range(self.board.board_size):
@@ -100,6 +101,10 @@ class HeadlessReversiCreator(object):
 					p1_stones += 1
 				if self.board.board[x][y] == 1:
 					p2_stones += 1
+		return [p1_stones, p2_stones]
+
+	def printFinalScore(self):
+		p1_stones, p2_stones = self.countStones()
 
 		print('\n\n-----------------------------\n')
 		print('Final score:\n\nPlayer%d:Player%d\n\t[%d:%d]\n' % (self.player1_color,
@@ -121,7 +126,6 @@ if __name__ == "__main__":
 	p2_color = 1
 	board_size = 8
 
-	importsCorrect = True
 	colors = [p1_color, p2_color]
 	players = []
 	# if only one player specified, it will play againts itself
@@ -137,3 +141,4 @@ if __name__ == "__main__":
 	game = HeadlessReversiCreator(players[0], p1_color,
 								  players[1], p2_color, board_size)
 	game.play_game()
+
