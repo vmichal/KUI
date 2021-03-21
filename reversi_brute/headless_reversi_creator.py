@@ -48,8 +48,8 @@ class HeadlessReversiCreator(object):
 				correct_finish = False
 				break
 			else:
-				if moveTime > 100:
-					print(f'New max move time {moveTime:.3f} ms')
+				maxMoveTime = max(maxMoveTime, moveTime)
+
 				#print('Player %d wants move [%d,%d]. Move takes %.3f ms.' % (
 				#		self.current_player_color, move[0], move[1], moveTime))
 				pass
@@ -80,6 +80,7 @@ class HeadlessReversiCreator(object):
 			#self.board.print_board()
 		if correct_finish:
 			#self.printFinalScore()
+			print(f'Max move time {maxMoveTime:.2f} ms')
 			return self.countStones()
 		else:
 			print('Game over.')
@@ -145,7 +146,7 @@ if __name__ == "__main__":
 		player_modules.append(player_module)
 	
 
-	games = 1000
+	games = 200
 	player_wins = 0
 	draws = 0
 	for i in range(games):
