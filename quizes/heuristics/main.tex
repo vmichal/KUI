@@ -1,0 +1,119 @@
+\documentclass[twoside]{article}
+\usepackage[a4paper]{geometry}
+\geometry{verbose,tmargin=2.5cm,bmargin=2cm,lmargin=2cm,rmargin=2cm}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+% nastavení pisma a češtiny
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[czech]{babel}
+
+% odkazy
+\usepackage{url}
+
+% vícesloupcové tabulky
+\usepackage{multirow}
+\usepackage{amssymb}
+\usepackage{bbold}
+\usepackage{amsmath}
+\usepackage{commath}
+
+% vnořené popisky obrázků
+\usepackage{subcaption}
+
+% automatická konverze EPS 
+\usepackage{graphicx} 
+\usepackage{epstopdf}
+\epstopdfsetup{update}
+
+\graphicspath{{./images}}
+
+% odkazy a záložky
+\usepackage[unicode=true, bookmarks=true,bookmarksnumbered=true,
+bookmarksopen=false, breaklinks=false,pdfborder={0 0 0},
+pdfpagemode=UseNone,backref=false,colorlinks=true] {hyperref}
+
+% Poznámky při překladu
+\usepackage{xkeyval}	% Inline todonotes
+\usepackage[textsize = footnotesize]{todonotes}
+\presetkeys{todonotes}{inline}{}
+
+% enumerate zacina s pismenem
+\renewcommand{\theenumi}{\alph{enumi}}
+
+% smaz aktualni page layout
+\fancyhf{}
+% zahlavi
+\usepackage{titling}
+\fancyhf[HC]{\thetitle}
+\fancyhf[HLE,HRO]{\theauthor}
+\fancyhf[HRE,HLO]{\today}
+ %zapati
+\fancyhf[FLE,FRO]{\thepage}
+
+% údaje o autorovi
+\title{KUI kvíz 3 - Heuristika}
+\author{Vojtěch Michal}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+
+\section{Zadání}
+Tu: \url{https://cw.fel.cvut.cz/wiki/_media/courses/b3b33kui/cviceni/program_po_tydnech/heuristics_ct_4mar_p103_cz.pdf}
+
+Uvazujte graf v zadání, A je start, G je cıl. Ceny za prechod mezi uzly jsou vyznaceny u hran. Prechod
+je mozny obema smery.
+Dokoncete nıze uvedenou heuristickou funkci $h$. Vsechny jejı hodnoty jsou jiz dane, krome $h(B)$.
+
+\begin{table}
+	\centering
+	\begin{tabular}{c|c|c|c|c|c|c|c|}
+		Node & A & B & C & D & E & F & G \\ 
+		\hline
+		$h(\text{Node})$ & 10 & ? & 8 & 7 & 1 & 4 & 0
+	\end{tabular}
+\end{table}
+
+\begin{itemize}
+	\item Pro jake hodnoty $h(B)$ je heuristika h prıpustna (admissible) ?
+	\item Jake hodnoty $h(B)$ cinı heuristiku h konzistentnı (consistent)?
+\end{itemize}
+
+\section{Přípustná heuristika}
+
+Přípustná heuristika nikdy nenadsadí cenu dosažení bodu, tedy pro libovolný jiný vrchol X bude platit
+\begin{equation*}
+	h(B) \le d(X, B),
+\end{equation*}
+kde $d(X, B)$ je optimální vzdálenost vrcholů X a B. Protože minimum funkce $d(X, B)$ je $d(A, B) = 1$ pro vrchol $X = A$,
+musí být heuristika menší nebo rovna této vzdálenosti. Proto
+\begin{equation*}
+	h(B) \le 1.
+\end{equation*}
+
+\section{Konzistentní heuristika}
+
+\begin{thebibliography}{9}
+
+\bibitem{rickroll}
+	, \emph{Practical approach to Turing's test} \url{https://www.youtube.com/watch?v=dQw4w9WgXcQ}
+\end{thebibliography}
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
+

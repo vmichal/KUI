@@ -3,12 +3,15 @@ import collections
 import math
 
 class MyPlayer():
-	'''Reversi player developed by Vojtech Michal.
-	Uses alpha-beta pruning to optimize state space search (maximal depth 6 layers).
-	Non-terminal states are evaluated by the difference of counts of my and opponent's stones,
-	the rationale being that greater number of stones will lead to greater overall score.
-	Capable of performing a move in about 450 ms on my machine.
-	'''
+	'''Reversi player developed by Vojtech Michal.'''
+
+
+
+	#Uses alpha-beta pruning to optimize state space search (maximal depth 6 layers).
+	#Non-terminal states are evaluated by the difference of counts of my and opponent's stones,
+	#the rationale being that greater number of stones will lead to greater overall score.
+	#Capable of performing a move in about 450 ms on my machine.
+	
 
 	def __init__(self, my_color, opponent_color, board_size=8):
 		self.name = 'michavo3'
