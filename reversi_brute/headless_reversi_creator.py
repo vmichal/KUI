@@ -126,24 +126,14 @@ if __name__ == "__main__":
 	players = []
 	# if only one player specified, it will play againts itself
 	for i in [0, -1]:
-		try:
-			to_import = args[i]
-			if ".py" in args[i]:
-				to_import = args[i].replace(".py", "")
-			print('importing', to_import)
-			player_module = __import__(to_import)
-			players.append(create_player(player_module.MyPlayer,
-										 colors[i], colors[i+1], board_size))
-		except ImportError:
-			importsCorrect = False
-			print('Error: Cannot import given player: %s.' % (args[i]))
-		except IndexError:
-			print('No player specified, will play random vs random.')
-			player_module = __import__('random_player')
-			players.append(create_player(player_module.MyPlayer,
-										 colors[i], colors[i+1], board_size))
+		to_import = args[i]
+		if ".py" in args[i]:
+			to_import = args[i].replace(".py", "")
+		print('importing', to_import)
+		player_module = __import__(to_import)
+		players.append(create_player(player_module.MyPlayer,
+									 colors[i], colors[i+1], board_size))
 
-	if importsCorrect:
-		game = HeadlessReversiCreator(players[0], p1_color,
-									  players[1], p2_color, board_size)
-		game.play_game()
+	game = HeadlessReversiCreator(players[0], p1_color,
+								  players[1], p2_color, board_size)
+	game.play_game()
