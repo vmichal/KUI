@@ -200,7 +200,7 @@ class MyPlayer():
 			if self.tile_owner(x, y, board) == self.colors.empty:
 				value = self.evaluate_move([x, y], board, currentPlayer, otherPlayer)
 				if value > 0:
-					valid_moves.append(([x, y], value))
+					valid_moves.append(((x, y), value))
 
 		if len(valid_moves) <= 0:
 			return None
