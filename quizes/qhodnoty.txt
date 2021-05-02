@@ -1,0 +1,26 @@
+Protože jsou všechny Qhodnoty inicializovány na nulu, hledáme vlastně epizodu
+a iteraci, ve které je poprvé nenulová hodnota trialu pro daný počáteční stav a akci.
+
+V první epizodě se změní jen a pouze Q hodnota pro ((3,2), N) na 120.
+Ve druhé epizodě se změní jen a poze Q hodnota ((2,2), S) na -70.
+Ve třetí epizodě se změní jen a pouze Q hodnota ((2,2), E) na 120.
+Ve čtvrté epizodě se změní na nanulovou Q hodnota ((1,2), E) na 120.
+
+Stav (1,2) s akcí E se objevuje poměrně často.
+V E:1, t:2 je trial=0 + 0, protože reward je nulová a (2,2) má všechny Qhodnoty nulové.
+V E:2, t:2 je trial=0 + 0, protože reward je nulový a (2,2) má stále všechny Qhodnoty nulové.
+V E:3, t:2 je trial=0+0, protože reward=0 a (2,2) má nejvyšší Q hodnotu ((2,2), E) nulovou.
+Teprve v E:4, t:2 je trial=0+120, protože ((2,2), E) je kladné.
+
+Stav (3,2) a akce S jsou napříč všemi epizodami provedeny jenom jednou.
+Protože se jedná o stav bezprostředně před terminálním, je jeho reward nenulový
+a proto bude nenulový i odpovídající trial.
+Q-value pro stav (3,2) a akci S se změní prvně v E:5, t:4.
+
+Stav (2,2) se mění prvně pro E:3, t:3,
+tehdy je sice stále nulový reward, ale od stavu (3,2) podědíme vysokou Q hodnotu.
+
+Závěr:
+Q((1,2), E) je v E:4, t:2
+Q((3,2), S) je v E:5, t:4
+Q((2,2), E) je v E:3, t:3
